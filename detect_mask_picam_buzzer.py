@@ -15,6 +15,9 @@ import imutils
 import time
 import cv2
 import os
+from datetime import datetime
+
+file_saved_flag = 0
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
 	# grab the dimensions of the frame and then construct a blob
@@ -135,6 +138,13 @@ while True:
 		else:
 			label = "No Face Mask Detected"
 			color = (0, 0, 255)
+			if file_saved_flag==0:	
+				now = datetime.now()
+				current_time = now.strftime("%d-%m-%y-%H-%M-%S")
+				file_name = current_time + ".jpg"		
+				result = cv2.imwrite(file_name,frame)
+			if result:
+				file_saved_flag = 1
 			buzzer.on()
 			green.off()
 			red.on()
