@@ -4,6 +4,20 @@ buzzer = Buzzer(21)
 red = LED(14)
 green = LED(15)
 
+import boto3
+
+client = boto3.client(
+    's3',
+    aws_access_key_id='AKIAUFIMRWDNDT2SMBFD',
+    aws_secret_access_key='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'
+)
+
+def push_to_cloud(fileName):
+	try:
+		response = client.put_object(Bucket='vivek-ec-23545235',Key=fileName)
+		print("Push to cloud successful")
+	except:
+		print("Push failed")
 # import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
@@ -143,6 +157,7 @@ while True:
 				current_time = now.strftime("%d-%m-%y-%H-%M-%S")
 				file_name = current_time + ".jpg"		
 				result = cv2.imwrite(file_name,frame)
+				push_to_cloud(file_name)
 			if result:
 				file_saved_flag = 1
 			buzzer.on()
