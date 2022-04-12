@@ -9,6 +9,9 @@ import imutils
 import time
 import cv2
 import os
+from datetime import datetime
+
+file_saved_flag = 0
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
 	# grab the dimensions of the frame and then construct a blob
@@ -66,7 +69,9 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 		# in the above `for` loop
 		faces = np.array(faces, dtype="float32")
 		preds = maskNet.predict(faces, batch_size=32)
-
+	else:
+		file_saved_flag = 0
+		print("No face detected")
 	# return a 2-tuple of the face locations and their corresponding
 	# locations
 	return (locs, preds)
@@ -106,11 +111,12 @@ while True:
 	# to have a maximum width of 400 pixels
 	frame = vs.read()
 	frame = imutils.resize(frame, width=500)
+	#mwrite(frame, 'n.png' );
 
 	# detect faces in the frame and determine if they are wearing a
 	# face mask or not
 	(locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
-
+	print("File flag = ",file_saved_flag)
 	# loop over the detected face locations and their corresponding
 	# locations
 	for (box, pred) in zip(locs, preds):
@@ -122,10 +128,21 @@ while True:
 		# the bounding box and text
 		if mask > withoutMask:
 			label = "Thank You. Mask On."
+			
 			color = (0, 255, 0)
 
 		else:
 			label = "No Face Mask Detected"
+			
+			if file_saved_flag==0:	
+				now = datetime.now()
+				current_time = now.strftime("%d-%m-%y-%H-%M-%S")
+				file_name = current_time + ".jpg"		
+				result = cv2.imwrite(file_name,frame)
+			if result:
+				file_saved_flag = 1
+			#print(locs)
+			#print(preds)
 			color = (0, 0, 255)
 		
 		#label = "Thank you" if mask > withoutMask else "Please wear your face mask"
@@ -143,7 +160,6 @@ while True:
 	# show the output frame
 	cv2.imshow("Face Mask Detector", frame)
 	key = cv2.waitKey(1) & 0xFF
-
 	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
 		break
