@@ -3,6 +3,7 @@ from gpiozero import Buzzer, LED
 buzzer = Buzzer(21)
 red = LED(14)
 green = LED(15)
+file_saved_flag = 0
 
 import boto3
 
@@ -31,9 +32,9 @@ import cv2
 import os
 from datetime import datetime
 
-file_saved_flag = 0
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
+	global file_saved_flag
 	# grab the dimensions of the frame and then construct a blob
 	# from it
 	(h, w) = frame.shape[:2]
@@ -89,7 +90,10 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 		# in the above `for` loop
 		faces = np.array(faces, dtype="float32")
 		preds = maskNet.predict(faces, batch_size=32)
-
+	else:
+		print("I am in the else part")
+		file_saved_flag = 0
+		print("File save flag after else part = ",file_saved_flag)
 	# return a 2-tuple of the face locations and their corresponding
 	# locations
 	return (locs, preds)
@@ -125,11 +129,12 @@ time.sleep(2.0)
 
 # loop over the frames from the video stream
 while True:
+	#global file_saved_flag
 	# grab the frame from the threaded video stream and resize it
 	# to have a maximum width of 400 pixels
 	frame = vs.read()
 	frame = imutils.resize(frame, width=500)
-
+	print("File save flag = ",file_saved_flag)
 	# detect faces in the frame and determine if they are wearing a
 	# face mask or not
 	(locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
@@ -158,8 +163,8 @@ while True:
 				file_name = current_time + ".jpg"		
 				result = cv2.imwrite(file_name,frame)
 				push_to_cloud(file_name)
-			if result:
-				file_saved_flag = 1
+				if result:
+					file_saved_flag = 1
 			buzzer.on()
 			green.off()
 			red.on()
