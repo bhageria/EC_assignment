@@ -3,6 +3,7 @@ from gpiozero import Buzzer, LED
 buzzer = Buzzer(21)
 red = LED(14)
 green = LED(15)
+red.on()
 file_saved_flag = 0
 
 import boto3
@@ -14,11 +15,13 @@ client = boto3.client(
 )
 
 def push_to_cloud(fileName):
-	try:
-		response = client.put_object(Bucket='vivek-ec-23545235',Key=fileName)
-		print("Push to cloud successful")
-	except:
-		print("Push failed")
+	#try:
+	response = client.upload_file(fileName, 'vivek-ec-23545235',fileName)
+	print(response)
+    
+    	#print("Push to cloud successful")
+	#except:
+	#	print("Push failed")
 # import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
@@ -91,9 +94,11 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 		faces = np.array(faces, dtype="float32")
 		preds = maskNet.predict(faces, batch_size=32)
 	else:
-		print("I am in the else part")
+		#print("I am in the else part")
 		file_saved_flag = 0
-		print("File save flag after else part = ",file_saved_flag)
+		red.on()
+		green.off()
+		#print("File save flag after else part = ",file_saved_flag)
 	# return a 2-tuple of the face locations and their corresponding
 	# locations
 	return (locs, preds)
