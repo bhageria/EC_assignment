@@ -1,4 +1,5 @@
 #initialize buzzer and LEDs
+import cv2
 from gpiozero import Buzzer, LED
 buzzer = Buzzer(21)
 red = LED(14)
@@ -31,7 +32,6 @@ import numpy as np
 import argparse
 import imutils
 import time
-import cv2
 import os
 from datetime import datetime
 
