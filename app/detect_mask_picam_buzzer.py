@@ -1,10 +1,10 @@
 #initialize buzzer and LEDs
 import cv2
-from gpiozero import Buzzer, LED
-buzzer = Buzzer(21)
-red = LED(14)
-green = LED(15)
-red.on()
+#from gpiozero import Buzzer, LED
+#buzzer = Buzzer(21)
+#red = LED(14)
+#green = LED(15)
+#red.on()
 file_saved_flag = 0
 
 import boto3
@@ -96,8 +96,8 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	else:
 		#print("I am in the else part")
 		file_saved_flag = 0
-		red.on()
-		green.off()
+#		red.on()
+#		green.off()
 		#print("File save flag after else part = ",file_saved_flag)
 	# return a 2-tuple of the face locations and their corresponding
 	# locations
@@ -128,8 +128,8 @@ maskNet = load_model(args["model"])
 
 # initialize the video stream and allow the camera sensor to warm up
 print("[INFO] starting video stream...")
-#vs = VideoStream(src=0).start()
-vs = VideoStream(usePiCamera=True).start()
+vs = VideoStream(src=0).start()
+#vs = VideoStream(usePiCamera=True).start()
 time.sleep(2.0)
 
 # loop over the frames from the video stream
@@ -156,9 +156,9 @@ while True:
 		if mask > withoutMask:
 			label = "Thank You. Mask On."
 			color = (0, 255, 0)
-			buzzer.off()
-			red.off()
-			green.on()
+#			buzzer.off()
+#			red.off()
+#			green.on()
 		else:
 			label = "No Face Mask Detected"
 			color = (0, 0, 255)
@@ -170,9 +170,9 @@ while True:
 				push_to_cloud(file_name)
 				if result:
 					file_saved_flag = 1
-			buzzer.on()
-			green.off()
-			red.on()
+#			buzzer.on()
+#			green.off()
+#			red.on()
 		
 		# display the label and bounding box rectangle on the output
 		# frame

@@ -7,7 +7,7 @@ libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev \
 libx264-dev libdc1394-22-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
 libatlas-base-dev liblapacke-dev gfortran \
 libhdf5-dev libhdf5-103 \
-python3-dev python3-pip python3-numpy wget
+python3-dev python3-pip python3-numpy wget libgtk2.0-dev
 
 WORKDIR /root
 RUN git clone https://github.com/opencv/opencv.git
@@ -34,6 +34,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D WITH_LIBV4L=ON \
 -D WITH_VTK=OFF \
 -D WITH_QT=OFF \
+-D WITH_GTK=ON \
 -D OPENCV_ENABLE_NONFREE=ON \
 -D INSTALL_C_EXAMPLES=OFF \
 -D INSTALL_PYTHON_EXAMPLES=OFF \
