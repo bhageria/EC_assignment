@@ -1,5 +1,6 @@
 #initialize buzzer and LEDs
 import cv2
+import os
 #from gpiozero import Buzzer, LED
 #buzzer = Buzzer(21)
 #red = LED(14)
@@ -8,11 +9,13 @@ import cv2
 file_saved_flag = 0
 
 import boto3
+aws_key = os.environ['AWS_ACCESS'] if os.environ['AWS_ACCESS'] else 'AKIAUFIMRWDNDT2SMBFD'
+aws_secret = os.environ['AWS_SECRET'] if os.environ['AWS_SECRET'] else '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'
 
 client = boto3.client(
     's3',
-    aws_access_key_id='AKIAUFIMRWDNDT2SMBFD',
-    aws_secret_access_key='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'
+    aws_access_key_id = aws_key,
+    aws_secret_access_key=aws_secret
 )
 
 def push_to_cloud(fileName):
