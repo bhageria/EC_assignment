@@ -10,8 +10,8 @@ import boto3
 
 client = boto3.client(
     's3',
-    aws_access_key_id='AKIAUFIMRWDNDT2SMBFD',
-    aws_secret_access_key='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'
+    aws_access_key_id='AKIAUFIMRxxxxxxxxxxxxx',
+    aws_secret_access_key='SLGEUEMg9q2Ib8Pxxxxxxxxxxxxxxxxx'
 )
 
 def push_to_cloud(fileName):
