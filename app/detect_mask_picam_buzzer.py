@@ -9,8 +9,8 @@ import os
 file_saved_flag = 0
 
 import boto3
-aws_key = os.environ['AWS_ACCESS'] if os.environ['AWS_ACCESS'] else 'AKIAUFIMRWDNDT2SMBFD'
-aws_secret = os.environ['AWS_SECRET'] if os.environ['AWS_SECRET'] else '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'
+aws_key = os.environ.get('AWS_ACCESS')
+aws_secret = os.environ.get('AWS_SECRET')
 
 client = boto3.client(
     's3',
